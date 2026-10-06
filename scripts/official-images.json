@@ -1,0 +1,147 @@
+{
+  "j5": {
+    "page": "https://jaecoo.id/model/jaecoo-j5-ev",
+    "images": [
+      "https://cms.jaecoo.id/uploads/03_OL_97070cda8e.jpeg",
+      "https://cms.jaecoo.id/uploads/2/black_J5_db1edc791a.png",
+      "https://cms.jaecoo.id/uploads/2/green_J5_3229e8a413.png",
+      "https://cms.jaecoo.id/uploads/2/silver_J5_34aaede182.png",
+      "https://cms.jaecoo.id/uploads/2/white_J5_56cbfe2570.png",
+      "https://cms.jaecoo.id/uploads/Frame_1171278251_4f133c471d.jpg",
+      "https://cms.jaecoo.id/uploads/Group_21_1_7f2fa8a308.png",
+      "https://cms.jaecoo.id/uploads/Group_23_69ecc3b907.png",
+      "https://cms.jaecoo.id/uploads/Group_24_3351333ce5.png",
+      "https://cms.jaecoo.id/uploads/Group_25_faf1e38e0f.png",
+      "https://cms.jaecoo.id/uploads/Group_26_d78e5b40e0.png",
+      "https://cms.jaecoo.id/uploads/Hero_Img_1_5b8420489a.jpg",
+      "https://cms.jaecoo.id/uploads/J5_063f1d14bf.png",
+      "https://cms.jaecoo.id/uploads/J7_SHS_P_Flip_054aced26c.webp",
+      "https://cms.jaecoo.id/uploads/SHS_P_ARDIS_Flip_af1e41f9b4.webp",
+      "https://cms.jaecoo.id/uploads/front_ac4df0c185.jpeg",
+      "https://cms.jaecoo.id/uploads/rear_trunk_202b50fca7_1_f6100a8588.png"
+    ],
+    "labeled": [
+      {
+        "label": "Jaecoo J5 IVORY GRAY",
+        "file": "Group_25_faf1e38e0f.png"
+      },
+      {
+        "label": "Jaecoo J5 FOREST GREEN",
+        "file": "Group_26_d78e5b40e0.png"
+      },
+      {
+        "label": "Jaecoo J5 WHITE PRISTINE",
+        "file": "Group_23_69ecc3b907.png"
+      },
+      {
+        "label": "Jaecoo J5 JET BLACK",
+        "file": "Group_24_3351333ce5.png"
+      }
+    ]
+  },
+  "j7": {
+    "page": "https://jaecoo.id/model/jaecoo-j7",
+    "images": [
+      "https://cms.jaecoo.id/uploads/19_Wheels_2_e78d1fdf23.webp",
+      "https://cms.jaecoo.id/uploads/2/Silver_J7_02162e6d36.png",
+      "https://cms.jaecoo.id/uploads/2/black_J7_377a8f4a25.png",
+      "https://cms.jaecoo.id/uploads/2/olive_gray_J7_221aef84bf.png",
+      "https://cms.jaecoo.id/uploads/2/white_J7_0a55020d26.png",
+      "https://cms.jaecoo.id/uploads/5th_generation_a76fa3bb8f.webp",
+      "https://cms.jaecoo.id/uploads/Group_32_95b175f3dc.png",
+      "https://cms.jaecoo.id/uploads/Group_33_037fb2157f.png",
+      "https://cms.jaecoo.id/uploads/Group_34_82f68abdb7.png",
+      "https://cms.jaecoo.id/uploads/Group_35_67abb69ded.png",
+      "https://cms.jaecoo.id/uploads/Group_36_afef68046a.png",
+      "https://cms.jaecoo.id/uploads/Group_37_295e2ad7dc.png",
+      "https://cms.jaecoo.id/uploads/J5_063f1d14bf.png",
+      "https://cms.jaecoo.id/uploads/J7_Mobile_1_cfae94561e.png",
+      "https://cms.jaecoo.id/uploads/J7_SHS_P_Flip_054aced26c.webp",
+      "https://cms.jaecoo.id/uploads/LED_3b8645aaa9.webp",
+      "https://cms.jaecoo.id/uploads/Retractable_handles_21e6924afb.webp",
+      "https://cms.jaecoo.id/uploads/SHS_P_ARDIS_Flip_af1e41f9b4.webp",
+      "https://cms.jaecoo.id/uploads/image_33_3cf93309a4.png",
+      "https://cms.jaecoo.id/uploads/image_81707_5f7ebfdb9f.jpeg",
+      "https://cms.jaecoo.id/uploads/ip68_664f0ee41a.webp",
+      "https://cms.jaecoo.id/uploads/phev_interior_a08740a37f.png",
+      "https://cms.jaecoo.id/uploads/rear_tailgate_c92df1a88c.jpg",
+      "https://cms.jaecoo.id/uploads/rear_view_df3c56c01b.webp"
+    ],
+    "labeled": [
+      {
+        "label": "Jaecoo J5 STONE GRAY",
+        "file": "Group_32_95b175f3dc.png"
+      },
+      {
+        "label": "Jaecoo J5 MOONLIGHT SILVER",
+        "file": "Group_33_037fb2157f.png"
+      },
+      {
+        "label": "Jaecoo J5 PRISTINE WHITE",
+        "file": "Group_34_82f68abdb7.png"
+      },
+      {
+        "label": "Jaecoo J5 JET BLACK",
+        "file": "Group_35_67abb69ded.png"
+      },
+      {
+        "label": "Jaecoo J5 PRISTINE WHITE TWO TONE",
+        "file": "Group_36_afef68046a.png"
+      }
+    ]
+  },
+  "j8-shs": {
+    "page": "https://jaecoo.id/model/jaecoo-j8-shs-p-ardis",
+    "images": [
+      "https://cms.jaecoo.id/uploads/2880_x_1620_b0a150edf3.jpg",
+      "https://cms.jaecoo.id/uploads/810_x_1440_8ed47cac22.jpg",
+      "https://cms.jaecoo.id/uploads/Group_27_e0237a1b2b.png",
+      "https://cms.jaecoo.id/uploads/Group_28_435452dcc4.png",
+      "https://cms.jaecoo.id/uploads/Group_29_9b5883e023.png",
+      "https://cms.jaecoo.id/uploads/Group_30_4da0e34d93.png",
+      "https://cms.jaecoo.id/uploads/Group_31_a8acb8f288.png",
+      "https://cms.jaecoo.id/uploads/Icon_Black_3_b87c8ab139.png",
+      "https://cms.jaecoo.id/uploads/Icon_Green_2_740f04a788.png",
+      "https://cms.jaecoo.id/uploads/Icon_Silver_3_10eefe6c9d.png",
+      "https://cms.jaecoo.id/uploads/Icon_White_3_addd330d06.png",
+      "https://cms.jaecoo.id/uploads/J5_063f1d14bf.png",
+      "https://cms.jaecoo.id/uploads/J7_SHS_P_Flip_054aced26c.webp",
+      "https://cms.jaecoo.id/uploads/J8_Handle_e00f41e484.jpg",
+      "https://cms.jaecoo.id/uploads/J8_SHS_up_view_1_8d0eccd37f_1_f267ab568d.jpeg",
+      "https://cms.jaecoo.id/uploads/SHS_P_ARDIS_Flip_af1e41f9b4.webp",
+      "https://cms.jaecoo.id/uploads/Waistline_c7641978f9.webp",
+      "https://cms.jaecoo.id/uploads/_eb42a76376.jpg",
+      "https://cms.jaecoo.id/uploads/_ef62d4f822.jpg",
+      "https://cms.jaecoo.id/uploads/banner8_1_a429801a0d.webp",
+      "https://cms.jaecoo.id/uploads/front_grille_d9baeb5290.jpg",
+      "https://cms.jaecoo.id/uploads/image_81704_1_277c2e39ba.jpeg"
+    ],
+    "labeled": [
+      {
+        "label": "Jaecoo J5 STONE GRAY",
+        "file": "Group_27_e0237a1b2b.png"
+      },
+      {
+        "label": "Jaecoo J5 PRISTINE WHITE TWO TONE",
+        "file": "Group_29_9b5883e023.png"
+      },
+      {
+        "label": "Jaecoo J5 LUNAR SILVER",
+        "file": "Group_31_a8acb8f288.png"
+      },
+      {
+        "label": "Jaecoo J5 JET BLACK",
+        "file": "Group_30_4da0e34d93.png"
+      }
+    ]
+  },
+  "j8-awd": {
+    "page": "https://jaecoo.id/model/jaecoo-j8-ardis",
+    "images": [
+      "https://cms.jaecoo.id/uploads/J5_063f1d14bf.png",
+      "https://cms.jaecoo.id/uploads/J7_SHS_P_Flip_054aced26c.webp",
+      "https://cms.jaecoo.id/uploads/SHS_P_ARDIS_Flip_af1e41f9b4.webp"
+    ],
+    "labeled": []
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "j5": {
+    "page": "https://jaecoo.id/model/jaecoo-j5-ev",
+    "jumlahWarna": 4,
+    "colors": [
+      {
+        "name": "IVORY GRAY",
+        "swatchFile": "2/silver_J5_34aaede182.png",
+        "photoFile": "Group_25_faf1e38e0f.png"
+      },
+      {
+        "name": "FOREST GREEN",
+        "swatchFile": "2/green_J5_3229e8a413.png",
+        "photoFile": "Group_26_d78e5b40e0.png"
+      },
+      {
+        "name": "WHITE PRISTINE",
+        "swatchFile": "2/white_J5_56cbfe2570.png",
+        "photoFile": "Group_23_69ecc3b907.png"
+      },
+      {
+        "name": "JET BLACK",
+        "swatchFile": "2/black_J5_db1edc791a.png",
+        "photoFile": "Group_24_3351333ce5.png"
+      }
+    ]
+  },
+  "j7": {
+    "page": "https://jaecoo.id/model/jaecoo-j7",
+    "jumlahWarna": 5,
+    "colors": [
+      {
+        "name": "STONE GRAY",
+        "swatchFile": "2/olive_gray_J7_221aef84bf.png",
+        "photoFile": "Group_32_95b175f3dc.png"
+      },
+      {
+        "name": "MOONLIGHT SILVER",
+        "swatchFile": "2/Silver_J7_02162e6d36.png",
+        "photoFile": "Group_33_037fb2157f.png"
+      },
+      {
+        "name": "PRISTINE WHITE",
+        "swatchFile": "2/white_J7_0a55020d26.png",
+        "photoFile": "Group_34_82f68abdb7.png"
+      },
+      {
+        "name": "JET BLACK",
+        "swatchFile": "2/black_J7_377a8f4a25.png",
+        "photoFile": "Group_35_67abb69ded.png"
+      },
+      {
+        "name": "PRISTINE WHITE TWO TONE",
+        "swatchFile": "image_33_3cf93309a4.png",
+        "photoFile": "Group_36_afef68046a.png"
+      }
+    ]
+  },
+  "j8": {
+    "page": "https://jaecoo.id/model/jaecoo-j8-shs-p-ardis",
+    "jumlahWarna": 4,
+    "colors": [
+      {
+        "name": "STONE GRAY",
+        "swatchFile": "Icon_Green_2_740f04a788.png",
+        "photoFile": "Group_27_e0237a1b2b.png"
+      },
+      {
+        "name": "PRISTINE WHITE TWO TONE",
+        "swatchFile": "Icon_White_3_addd330d06.png",
+        "photoFile": "Group_29_9b5883e023.png"
+      },
+      {
+        "name": "LUNAR SILVER",
+        "swatchFile": "Icon_Silver_3_10eefe6c9d.png",
+        "photoFile": "Group_31_a8acb8f288.png"
+      },
+      {
+        "name": "JET BLACK",
+        "swatchFile": "Icon_Black_3_b87c8ab139.png",
+        "photoFile": "Group_30_4da0e34d93.png"
+      }
+    ]
+  }
+}
