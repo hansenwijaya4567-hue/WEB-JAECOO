@@ -383,9 +383,17 @@ produksi Anda, karena semua URL absolut diturunkan dari nilai tersebut (canonica
 
 ---
 
-## 11. Formula Simulasi Kredit
+## 11. Simulasi Kredit
 
-Menggunakan metode **bunga flat** (umum dipakai leasing Indonesia):
+Ada dua skema, dipilih otomatis per varian:
+
+**a. Paket Maybank Finance** (varian yang punya data di `creditPackages`)
+
+Angka TDP dan angsuran per tenor (11 / 23 / 35 / 47 / 59 bulan) diambil apa
+adanya dari daftar resmi Maybank, sudah termasuk asuransi All Risk, TJH 10
+Juta, dan Credit Life. Ubah di `creditPackages` pada `src/data/config.ts`.
+
+**b. Rumus bunga flat** (varian tanpa paket, mis. J5 Standard)
 
 ```
 DP          = Harga OTR x (DP% / 100)

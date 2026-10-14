@@ -8,6 +8,7 @@ import {
   colorLabel,
   colorsForVariant,
   contact,
+  featuredVariant,
   isPlaceholder,
   models,
   variants,
@@ -28,7 +29,7 @@ import { GA_EVENTS, trackEvent } from "@/lib/analytics";
  * unit dengan transisi halus (crossfade + scale ringan) via AnimatePresence.
  */
 export function ColorPicker({ onSelectColor }: { onSelectColor?: (id: string) => void }) {
-  const [variantId, setVariantId] = useState<string>(variants[0].id);
+  const [variantId, setVariantId] = useState<string>(featuredVariant.id);
   const activeVariant = variants.find((variant) => variant.id === variantId) ?? variants[0];
 
   const availableColors = colorsForVariant(activeVariant);
@@ -85,12 +86,12 @@ export function ColorPicker({ onSelectColor }: { onSelectColor?: (id: string) =>
           {/* Foto unit */}
           <RevealItem>
             <div className="relative overflow-hidden rounded-3xl border border-line bg-white shadow-card">
-              <div className="relative aspect-[16/10]">
+              <div className="relative aspect-[16/10] bg-brand-50">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={activeColor.id}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.03 }}
+                    initial={{ opacity: 0, scale: 1.015 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.985 }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -100,7 +101,7 @@ export function ColorPicker({ onSelectColor }: { onSelectColor?: (id: string) =>
                       alt={`${activeVariant.name} warna ${activeColorName}`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 55vw"
-                      className="object-cover"
+                      className="object-contain p-4"
                     />
                   </motion.div>
                 </AnimatePresence>

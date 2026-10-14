@@ -349,9 +349,9 @@ export type FuelType = "Electric" | "Hybrid" | "Gasoline";
 /**
  * Varian yang dijual beserta harga OTR Medan.
  *
- * Harga sudah dikonfirmasi: J5 Standard 313.800.000, J5 EV Premium
- * 342.800.000, J7 SHS 535.800.000, J7 AWD 575.800.000, J8 AWD 729.800.000,
- * J8 SHS 859.800.000.
+ * Harga mengikuti daftar OTR Maybank Finance: J5 Standard 313.800.000,
+ * J5 EV Premium (sudah termasuk body kit) 366.800.000, J7 SHS 540.800.000,
+ * J7 AWD 575.800.000, J8 ARDIS AWD 729.800.000, J8 ARDIS SHS 869.800.000.
  *
  * PENTING - `specs` hanya diisi data yang benar-benar tersedia. Kunci yang
  * tidak dicantumkan berarti datanya belum diterima, dan selnya akan tampil
@@ -400,8 +400,8 @@ export const variants = [
     name: "J5 EV Premium",
     powertrain: "EV",
     fuel: "Electric",
-    subtitle: "Varian premium dengan panoramic roof",
-    price: 342_800_000,
+    subtitle: "Varian premium dengan panoramic roof dan body kit",
+    price: 366_800_000,
     image: "/images/varian-j5-ev-premium.jpg",
     imageAlt: "JAECOO J5 EV Premium",
     badge: "Rekomendasi",
@@ -413,6 +413,7 @@ export const variants = [
     isFeatured: true,
     highlights: [
       "Semua fitur J5 Standard",
+      "Body kit sudah termasuk (gratis)",
       "Panoramic roof 1,45 m2",
       "Baterai 60,9 kWh - 461 km",
       "Kamera 540 derajat",
@@ -430,7 +431,7 @@ export const variants = [
       "Kapasitas penumpang": "5 penumpang",
       "Layar sentuh": "13,2 inci vertikal",
       "Fitur andalan":
-        "Panoramic roof 1,45 m2, kamera 540 derajat, 17 sistem ADAS terintegrasi",
+        "Panoramic roof 1,45 m2, body kit, kamera 540 derajat, 17 sistem ADAS terintegrasi",
       Keamanan: "17 sistem ADAS terintegrasi",
     },
   },
@@ -441,7 +442,7 @@ export const variants = [
     powertrain: "SHS",
     fuel: "Hybrid",
     subtitle: "Super Hybrid System untuk harian dan luar kota",
-    price: 535_800_000,
+    price: 540_800_000,
     image: "/images/varian-j7-shs.jpg",
     imageAlt: "JAECOO J7 SHS",
     badge: "Rekomendasi",
@@ -537,7 +538,7 @@ export const variants = [
     powertrain: "SHS",
     fuel: "Hybrid",
     subtitle: "SUV 7-seater dengan Super Hybrid System",
-    price: 859_800_000,
+    price: 869_800_000,
     image: "/images/varian-j8-shs.jpg",
     imageAlt: "JAECOO J8 ARDIS SHS",
     badge: null,
@@ -565,6 +566,80 @@ export const variants = [
 export type Variant = (typeof variants)[number];
 export type VariantId = (typeof variants)[number]["id"];
 
+/* ------------------------------------------------------------------ */
+/*  5b. PAKET KREDIT MAYBANK FINANCE                                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Satu paket kredit dari Maybank Finance untuk tenor tertentu.
+ *
+ * Angka `tdp` dan `angsuran` sudah termasuk asuransi All Risk, TJH 10 juta,
+ * dan Credit Life sesuai penawaran Maybank. Paket ini menggantikan hitungan
+ * rumus bunga flat untuk varian yang datanya tersedia.
+ */
+export interface CreditPackage {
+  /** Tenor dalam bulan, contoh 11 / 23 / 35 / 47 / 59. */
+  tenorMonths: number;
+  /** Suku bunga flat per tahun (%). */
+  ratePercent: number;
+  /** Total down payment (TDP) dalam Rupiah. */
+  tdp: number;
+  /** Angsuran per bulan dalam Rupiah. */
+  monthlyInstallment: number;
+}
+
+/**
+ * Paket kredit Maybank per varian.
+ *
+ * Hanya varian yang sudah punya penawaran resmi yang diisi. Varian yang tidak
+ * tercantum (mis. J5 Standard) tetap memakai simulasi rumus bunga flat.
+ *
+ * `j5-ev-premium` memakai baris "J5 EV Premium Bodykit" dari daftar Maybank
+ * karena unit premium memang sudah termasuk body kit.
+ */
+export const creditPackages: Partial<Record<VariantId, readonly CreditPackage[]>> = {
+  "j5-ev-premium": [
+    { tenorMonths: 11, ratePercent: 1.98, tdp: 118_436_500, monthlyInstallment: 26_185_000 },
+    { tenorMonths: 23, ratePercent: 2.58, tdp: 115_719_500, monthlyInstallment: 13_501_000 },
+    { tenorMonths: 35, ratePercent: 2.58, tdp: 122_177_500, monthlyInstallment: 9_222_000 },
+    { tenorMonths: 47, ratePercent: 3.48, tdp: 130_639_500, monthlyInstallment: 7_313_000 },
+    { tenorMonths: 59, ratePercent: 3.98, tdp: 139_778_500, monthlyInstallment: 6_158_000 },
+  ],
+  "j7-shs": [
+    { tenorMonths: 11, ratePercent: 1.98, tdp: 165_476_500, monthlyInstallment: 38_608_000 },
+    { tenorMonths: 23, ratePercent: 2.58, tdp: 156_123_500, monthlyInstallment: 19_905_000 },
+    { tenorMonths: 35, ratePercent: 2.58, tdp: 160_298_000, monthlyInstallment: 13_596_000 },
+    { tenorMonths: 47, ratePercent: 3.48, tdp: 167_308_500, monthlyInstallment: 10_782_000 },
+    { tenorMonths: 59, ratePercent: 3.98, tdp: 175_416_500, monthlyInstallment: 9_078_000 },
+  ],
+  "j7-awd": [
+    { tenorMonths: 11, ratePercent: 1.98, tdp: 175_662_500, monthlyInstallment: 41_105_000 },
+    { tenorMonths: 23, ratePercent: 2.58, tdp: 165_696_500, monthlyInstallment: 21_191_000 },
+    { tenorMonths: 35, ratePercent: 2.58, tdp: 170_135_000, monthlyInstallment: 14_476_000 },
+    { tenorMonths: 47, ratePercent: 3.48, tdp: 177_577_000, monthlyInstallment: 11_480_000 },
+    { tenorMonths: 59, ratePercent: 3.98, tdp: 186_080_000, monthlyInstallment: 9_666_000 },
+  ],
+  "j8-awd": [
+    { tenorMonths: 11, ratePercent: 1.98, tdp: 220_477_000, monthlyInstallment: 52_098_000 },
+    { tenorMonths: 23, ratePercent: 2.58, tdp: 207_820_500, monthlyInstallment: 26_862_000 },
+    { tenorMonths: 35, ratePercent: 2.58, tdp: 213_417_500, monthlyInstallment: 18_347_000 },
+    { tenorMonths: 47, ratePercent: 3.48, tdp: 222_757_000, monthlyInstallment: 14_550_000 },
+    { tenorMonths: 59, ratePercent: 3.98, tdp: 233_440_500, monthlyInstallment: 12_251_000 },
+  ],
+  "j8-shs": [
+    { tenorMonths: 11, ratePercent: 1.98, tdp: 260_870_000, monthlyInstallment: 62_092_000 },
+    { tenorMonths: 23, ratePercent: 2.58, tdp: 245_417_500, monthlyInstallment: 32_014_000 },
+    { tenorMonths: 35, ratePercent: 2.58, tdp: 251_722_500, monthlyInstallment: 21_867_000 },
+    { tenorMonths: 47, ratePercent: 3.48, tdp: 262_437_500, monthlyInstallment: 17_341_000 },
+    { tenorMonths: 59, ratePercent: 3.98, tdp: 274_756_000, monthlyInstallment: 14_601_000 },
+  ],
+};
+
+/** Paket kredit Maybank milik sebuah varian, atau array kosong jika tidak ada. */
+export function creditPackagesFor(variantId: VariantId): readonly CreditPackage[] {
+  return creditPackages[variantId] ?? [];
+}
+
 /**
  * Rentang harga OTR, dihitung otomatis dari `variants` agar tidak pernah
  * tidak sinkron dengan harga di section Varian. Dipakai untuk `priceRange`
@@ -579,6 +654,13 @@ export const priceRange = {
 export const entryVariant = variants.reduce((cheapest, variant) =>
   variant.price < cheapest.price ? variant : cheapest,
 );
+
+/**
+ * Varian unggulan (isFeatured). Dipakai sebagai pilihan default di pemilih
+ * varian, termasuk simulasi kredit, supaya penawaran utama langsung terlihat.
+ */
+export const featuredVariant =
+  variants.find((variant) => variant.isFeatured) ?? variants[0];
 
 /** Nama model yang marketable, contoh: "J5, J7, dan J8". */
 export const modelLineup = models.map((model) => model.name);
@@ -854,31 +936,49 @@ export const galleryCategories = ["Semua", "Eksterior", "Interior", "Fitur"] as 
 export const credit = {
   title: "Simulasi Kredit JAECOO",
   subtitle:
-    "Geser DP, pilih tenor, lihat estimasi cicilan bulan ini. Tanpa registrasi, langsung dapat angkanya.",
+    "Pilih varian dan tenor, lihat estimasi TDP dan angsuran per bulan. Tanpa registrasi, langsung dapat angkanya.",
   /** Suku bunga flat per tahun (%). Angka ilustrasi umum leasing Indonesia. */
   flatRatePercent: 7.5,
   minDpPercent: 10,
   maxDpPercent: 50,
   defaultDpPercent: 20,
+  /** Tenor (tahun) untuk varian yang belum punya paket Maybank. */
   tenorOptions: [1, 2, 3, 4, 5] as const,
+  /** Tenor paket default (bulan) saat varian Maybank pertama kali dipilih. */
+  defaultPackageTenorMonths: 35,
   disclaimer:
     "Estimasi cicilan di atas bersifat illustrasi dan bukan penawaran final. Suku bunga, biaya administrasi, dan securiti ditentukan oleh leasing. Angka final mengikuti keputusan leasing.",
+  /** Catatan khusus untuk paket Maybank Finance. */
+  packageNote:
+    "Paket Maybank memakai asuransi All Risk + TJH 10 Juta + Credit Life. TDP sudah termasuk angsuran pertama dan biaya administrasi.",
+  maybankLegal:
+    "PT Maybank Indonesia Finance berizin dan diawasi oleh Otoritas Jasa Keuangan (OJK).",
   financingNote:
     "DP mulai 10% dengan tenor hingga 5 tahun. Butuh DP lebih kecil? Konsultasikan program khusus ke sales kami.",
 } as const;
 
 /**
- * Cicilan bulanan paling rendah yang bisa dicapai (harga termurah, DP
- * tertinggi, tenor terpanjang). Dipakai untuk copy "cicilan mulai dari ..."
- * di CTA penutup supaya tidak perlu menulis angka manual.
+ * Cicilan bulanan paling rendah yang bisa ditawarkan. Untuk varian berpaket
+ * Maybank diambil angsuran terkecil dari paketnya; varian lain (mis. J5
+ * Standard) masih memakai rumus bunga flat dengan DP tertinggi dan tenor
+ * terpanjang. Dipakai untuk copy "cicilan mulai dari ..." di CTA penutup.
  */
 export const lowestMonthlyInstallment = (() => {
-  const cheapest = Math.min(...variants.map((variant) => variant.price));
-  const longestTenor = credit.tenorOptions[credit.tenorOptions.length - 1];
-  const dpAmount = Math.round((cheapest * credit.maxDpPercent) / 100);
-  const principal = cheapest - dpAmount;
-  const totalBunga = (principal * (credit.flatRatePercent * longestTenor)) / 100;
-  return Math.round((principal + totalBunga) / (longestTenor * 12));
+  const formulaValues = variants
+    .filter((variant) => creditPackagesFor(variant.id).length === 0)
+    .map((variant) => {
+      const longestTenor = credit.tenorOptions[credit.tenorOptions.length - 1];
+      const dpAmount = Math.round((variant.price * credit.maxDpPercent) / 100);
+      const principal = variant.price - dpAmount;
+      const totalBunga = (principal * (credit.flatRatePercent * longestTenor)) / 100;
+      return Math.round((principal + totalBunga) / (longestTenor * 12));
+    });
+
+  const packageValues = Object.values(creditPackages)
+    .filter((packages): packages is readonly CreditPackage[] => Boolean(packages))
+    .flatMap((packages) => packages.map((item) => item.monthlyInstallment));
+
+  return Math.round(Math.min(...formulaValues, ...packageValues));
 })();
 
 /* ------------------------------------------------------------------ */
@@ -990,7 +1090,7 @@ export const journeySteps = [
     title: "Pengiriman",
     description:
       "Unit prepping, cek akhir bersama, lalu handover. Setelah itu Anda nikmati pengalaman JAECOO.",
-    duration: "7-14 hari",
+    duration: "1 bulan",
     icon: "delivery",
   },
 ] as const;
@@ -1084,7 +1184,7 @@ export const faqs = [
   {
     question: "Kredit dan DP berapa? Apakah bisa DP kecil?",
     answer:
-      "Simulasi kredit di halaman ini memakai asumsi DP mulai 10% dan tenor hingga 5 tahun dengan bunga flat, dan hasilnya bersifat estimasi - bukan penawaran final. Suku bunga, biaya administrasi, dan securiti ditentukan oleh leasing. Untuk program dengan DP lebih kecil atau bersubsidi, konsultasikan langsung ke sales kami.",
+      "Simulasi kredit di halaman ini memakai paket resmi Maybank Finance (TDP dan angsuran per tenor, sudah termasuk asuransi All Risk, TJH, dan Credit Life) untuk varian yang tersedia, serta asumsi bunga flat untuk varian lain. Semua angka bersifat estimasi - bukan penawaran final. Suku bunga, biaya administrasi, dan securiti ditentukan oleh leasing. Untuk program dengan DP lebih kecil atau bersubsidi, konsultasikan langsung ke sales kami.",
     category: "Kredit",
   },
   {

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useCallback, useState } from "react";
-import { colorsForVariant, variants } from "@/data/config";
+import { colorsForVariant, featuredVariant } from "@/data/config";
 import { Hero } from "@/components/sections/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { Features } from "@/components/sections/Features";
@@ -30,9 +30,9 @@ import { FloatingWhatsApp, MobileStickyBar } from "@/components/FloatingActions"
  * simulasi kredit tanpa perlu INPUT ulang.
  */
 export function LandingPage() {
-  const [selectedVariantId, setSelectedVariantId] = useState<string>(variants[0].id);
+  const [selectedVariantId, setSelectedVariantId] = useState<string>(featuredVariant.id);
   const [selectedColorId, setSelectedColorId] = useState<string>(
-    colorsForVariant(variants[0])[0]?.id ?? "",
+    colorsForVariant(featuredVariant)[0]?.id ?? "",
   );
   const [formActive, setFormActive] = useState(false);
 

@@ -79,19 +79,11 @@ export function Header() {
           {/* Logo */}
           <Link
             href="#beranda"
-            className="flex shrink-0 items-center gap-2.5"
+            className="flex shrink-0 items-center"
             aria-label={`${site.brand} ${site.model} di ${site.city} - kembali ke beranda`}
           >
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-500 text-sm font-black text-white shadow-[0_6px_16px_-6px_rgb(15_122_131/0.8)]">
-              {site.model}
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="text-[15px] font-extrabold tracking-tight text-ink">
-                {site.brand}
-              </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-600">
-                {site.city}
-              </span>
+            <span className="text-base font-extrabold uppercase tracking-tight text-ink sm:text-lg">
+              {site.brand} <span className="text-brand-600">{site.city}</span>
             </span>
           </Link>
 

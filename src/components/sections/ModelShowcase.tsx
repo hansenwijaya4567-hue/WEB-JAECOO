@@ -55,13 +55,13 @@ export function ModelShowcase() {
                   transition={{ type: "spring", stiffness: 300, damping: 26 }}
                   className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition-shadow hover:shadow-lift"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-brand-50">
+                  <div className="relative aspect-[16/9] overflow-hidden bg-brand-50">
                     <Image
                       src={model.image}
                       alt={model.imageAlt}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                      className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.02] sm:p-4"
                     />
                   </div>
 

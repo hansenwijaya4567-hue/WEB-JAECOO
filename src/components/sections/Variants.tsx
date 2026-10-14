@@ -151,7 +151,7 @@ function VariantCard({
             alt={variant.imageAlt}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+            className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.02] sm:p-4"
           />
         </div>
 

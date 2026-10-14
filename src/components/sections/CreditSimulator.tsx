@@ -2,8 +2,16 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Calculator, Info, MessageCircle, TrendingDown } from "lucide-react";
-import { contact, credit, site, variants, waMessages, type Variant } from "@/data/config";
+import { Calculator, Info, MessageCircle, ShieldCheck, TrendingDown } from "lucide-react";
+import {
+  contact,
+  credit,
+  creditPackagesFor,
+  site,
+  variants,
+  waMessages,
+  type Variant,
+} from "@/data/config";
 import { calculateCredit, formatRupiah, cn } from "@/lib/utils";
 import { GA_EVENTS, trackEvent } from "@/lib/analytics";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -13,8 +21,13 @@ import { WhatsAppLink } from "@/components/ui/WhatsAppLink";
 /**
  * Simulasi kredit interaktif.
  *
+ * Dua mode:
+ * - Varian dengan paket Maybank: pilih varian + tenor (bulan), tampil OTR,
+ *   rate, TDP, dan angsuran dari paket resmi.
+ * - Varian tanpa paket (mis. J5 Standard): slider DP + tenor tahun dengan
+ *   rumus bunga flat.
+ *
  * Harga mengikuti varian terpilih (bisa diisi dari section Varian).
- * Slider DP 10-50%, tenor 1-5 tahun, hasil cicilan real-time.
  */
 export function CreditSimulator({
   selectedVariantId,
@@ -26,6 +39,9 @@ export function CreditSimulator({
   const [variantId, setVariantId] = useState<string>(selectedVariantId);
   const [dpPercent, setDpPercent] = useState<number>(credit.defaultDpPercent);
   const [tenor, setTenor] = useState<number>(credit.tenorOptions[2]);
+  const [packageTenorMonths, setPackageTenorMonths] = useState<number>(
+    credit.defaultPackageTenorMonths,
+  );
   const [userInteracted, setUserInteracted] = useState(false);
   const [lastExternalVariantId, setLastExternalVariantId] = useState<string>(
     selectedVariantId,
@@ -44,6 +60,14 @@ export function CreditSimulator({
     [variantId],
   );
 
+  const packages = useMemo(() => creditPackagesFor(variant.id), [variant.id]);
+
+  const activePackage = useMemo(
+    () =>
+      packages.find((item) => item.tenorMonths === packageTenorMonths) ?? packages[0],
+    [packages, packageTenorMonths],
+  );
+
   const result = useMemo(
     () =>
       calculateCredit({
@@ -54,6 +78,11 @@ export function CreditSimulator({
       }),
     [variant.price, dpPercent, tenor],
   );
+
+  // Angka cicilan yang tampil: paket Maybank kalau ada, kalau tidak rumus flat.
+  const monthlyInstallment =
+    activePackage?.monthlyInstallment ?? result.monthlyInstallment;
+  const installmentText = `${formatRupiah(monthlyInstallment)}/bulan`;
 
   // Kirim event hanya saat pengguna benar-benar berinteraksi (bukan render awal),
   // dan throttle agar tidak Flood analytics saat slider digeser terus.
@@ -67,13 +96,20 @@ export function CreditSimulator({
 
     trackEvent(GA_EVENTS.creditSimulate, {
       variant: variant.name,
-      dp_percent: dpPercent,
-      tenor_years: tenor,
-      monthly_installment: result.monthlyInstallment,
+      plan: activePackage ? "maybank" : "flat",
+      tenor_months: activePackage?.tenorMonths,
+      tenor_years: activePackage ? undefined : tenor,
+      dp_percent: activePackage ? undefined : dpPercent,
+      monthly_installment: monthlyInstallment,
     });
-  }, [userInteracted, variant.name, dpPercent, tenor, result.monthlyInstallment]);
-
-  const installmentText = `${formatRupiah(result.monthlyInstallment)}/bulan`;
+  }, [
+    userInteracted,
+    variant.name,
+    activePackage,
+    tenor,
+    dpPercent,
+    monthlyInstallment,
+  ]);
 
   const handleWaRequest = () => {
     trackEvent(GA_EVENTS.waClick, {
@@ -134,76 +170,118 @@ export function CreditSimulator({
                 </div>
               </fieldset>
 
-              {/* Slider DP */}
-              <div className="mt-7">
-                <div className="flex items-baseline justify-between gap-3">
-                  <label
-                    htmlFor="dp-slider"
-                    className="text-xs font-bold uppercase tracking-[0.14em] text-ink/45"
-                  >
-                    Down Payment (DP)
-                  </label>
-                  <span className="tabular text-lg font-black text-brand-700">
-                    {dpPercent}%
-                  </span>
-                </div>
+              {activePackage ? (
+                <>
+                  {/* Tenor paket Maybank (bulan) */}
+                  <fieldset className="mt-7">
+                    <legend className="text-xs font-bold uppercase tracking-[0.14em] text-ink/45">
+                      Tenor Cicilan (Bulan)
+                    </legend>
+                    <div className="mt-2.5 grid grid-cols-5 gap-2">
+                      {packages.map((item) => {
+                        const isActive = item.tenorMonths === activePackage.tenorMonths;
+                        return (
+                          <button
+                            key={item.tenorMonths}
+                            type="button"
+                            onClick={() => {
+                              setPackageTenorMonths(item.tenorMonths);
+                              setUserInteracted(true);
+                            }}
+                            aria-pressed={isActive}
+                            className={cn(
+                              "tabular rounded-xl border px-1 py-2.5 text-sm font-bold transition-all",
+                              isActive
+                                ? "border-brand-500 bg-brand-500 text-white shadow-[0_8px_18px_-8px_rgb(15_122_131/0.8)]"
+                                : "border-line bg-white text-ink/65 hover:border-brand-200 hover:text-brand-700",
+                            )}
+                          >
+                            {item.tenorMonths} Bln
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
 
-                <input
-                  id="dp-slider"
-                  type="range"
-                  min={credit.minDpPercent}
-                  max={credit.maxDpPercent}
-                  step={1}
-                  value={dpPercent}
-                  onChange={(event) => {
-                    setDpPercent(Number(event.target.value));
-                    setUserInteracted(true);
-                  }}
-                  aria-valuetext={`${dpPercent} persen`}
-                  className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-brand-100 accent-brand-500 outline-none [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-500 [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgb(15_122_131/0.45)] [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-brand-500"
-                />
-
-                <div className="mt-2 flex justify-between text-[11px] font-semibold text-ink/40">
-                  <span>{credit.minDpPercent}%</span>
-                  <span className="tabular text-ink/60">
-                    {formatRupiah(result.dpAmount)}
-                  </span>
-                  <span>{credit.maxDpPercent}%</span>
-                </div>
-
-                <p className="mt-2 text-xs text-ink/50">{credit.financingNote}</p>
-              </div>
-
-              {/* Tenor */}
-              <fieldset className="mt-7">
-                <legend className="text-xs font-bold uppercase tracking-[0.14em] text-ink/45">
-                  Tenor Cicilan
-                </legend>
-                <div className="mt-2.5 grid grid-cols-5 gap-2">
-                  {credit.tenorOptions.map((option) => {
-                    const isActive = option === tenor;
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => {
-                          setTenor(option);
-                          setUserInteracted(true);
-                        }}
-                        aria-pressed={isActive}
-                        className={cn(
-                          "tabular rounded-xl border px-1 py-2.5 text-sm font-bold transition-all",
-                          isActive
-                            ? "border-brand-500 bg-brand-500 text-white shadow-[0_8px_18px_-8px_rgb(15_122_131/0.8)]"
-                            : "border-line bg-white text-ink/65 hover:border-brand-200 hover:text-brand-700",
-                        )}
+                  <div className="mt-5 flex items-start gap-2.5 rounded-2xl bg-brand-50/70 p-4 text-xs leading-relaxed text-ink/60 ring-1 ring-brand-100">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+                    <p>{credit.packageNote}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Slider DP */}
+                  <div className="mt-7">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <label
+                        htmlFor="dp-slider"
+                        className="text-xs font-bold uppercase tracking-[0.14em] text-ink/45"
                       >
-                        {option} Th
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
+                        Down Payment (DP)
+                      </label>
+                      <span className="tabular text-lg font-black text-brand-700">
+                        {dpPercent}%
+                      </span>
+                    </div>
+
+                    <input
+                      id="dp-slider"
+                      type="range"
+                      min={credit.minDpPercent}
+                      max={credit.maxDpPercent}
+                      step={1}
+                      value={dpPercent}
+                      onChange={(event) => {
+                        setDpPercent(Number(event.target.value));
+                        setUserInteracted(true);
+                      }}
+                      aria-valuetext={`${dpPercent} persen`}
+                      className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-brand-100 accent-brand-500 outline-none [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-500 [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgb(15_122_131/0.45)] [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-brand-500"
+                    />
+
+                    <div className="mt-2 flex justify-between text-[11px] font-semibold text-ink/40">
+                      <span>{credit.minDpPercent}%</span>
+                      <span className="tabular text-ink/60">
+                        {formatRupiah(result.dpAmount)}
+                      </span>
+                      <span>{credit.maxDpPercent}%</span>
+                    </div>
+
+                    <p className="mt-2 text-xs text-ink/50">{credit.financingNote}</p>
+                  </div>
+
+                  {/* Tenor */}
+                  <fieldset className="mt-7">
+                    <legend className="text-xs font-bold uppercase tracking-[0.14em] text-ink/45">
+                      Tenor Cicilan
+                    </legend>
+                    <div className="mt-2.5 grid grid-cols-5 gap-2">
+                      {credit.tenorOptions.map((option) => {
+                        const isActive = option === tenor;
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => {
+                              setTenor(option);
+                              setUserInteracted(true);
+                            }}
+                            aria-pressed={isActive}
+                            className={cn(
+                              "tabular rounded-xl border px-1 py-2.5 text-sm font-bold transition-all",
+                              isActive
+                                ? "border-brand-500 bg-brand-500 text-white shadow-[0_8px_18px_-8px_rgb(15_122_131/0.8)]"
+                                : "border-line bg-white text-ink/65 hover:border-brand-200 hover:text-brand-700",
+                            )}
+                          >
+                            {option} Th
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                </>
+              )}
             </div>
           </RevealItem>
 
@@ -219,23 +297,46 @@ export function CreditSimulator({
 
               {/* Angka besar */}
               <div className="mt-5">
-                <AnimateNumber value={result.monthlyInstallment} />
+                <AnimateNumber value={monthlyInstallment} />
                 <p className="mt-1 text-sm text-white/65">
-                  per bulan · tenor {tenor} tahun · bunga flat {credit.flatRatePercent}%
+                  {activePackage
+                    ? `per bulan · tenor ${activePackage.tenorMonths} bulan · bunga flat ${activePackage.ratePercent}%`
+                    : `per bulan · tenor ${tenor} tahun · bunga flat ${credit.flatRatePercent}%`}
                 </p>
               </div>
 
               {/* Rincian */}
               <dl className="mt-6 space-y-2.5 border-t border-white/15 pt-5 text-sm">
                 <Row label={`Harga OTR ${variant.name}`} value={formatRupiah(variant.price)} />
-                <Row
-                  label={`DP ${dpPercent}%`}
-                  value={formatRupiah(result.dpAmount)}
-                  tone="accent"
-                />
-                <Row label="Pokok Pinjaman" value={formatRupiah(result.principal)} />
-                <Row label="Total Bunga" value={formatRupiah(result.totalPayment - result.principal)} />
-                <Row label="Total Bayar" value={formatRupiah(result.totalPayment)} strong />
+                {activePackage ? (
+                  <>
+                    <Row label="Bunga (rate)" value={`${activePackage.ratePercent}%`} />
+                    <Row
+                      label="Total DP (TDP)"
+                      value={formatRupiah(activePackage.tdp)}
+                      tone="accent"
+                    />
+                    <Row
+                      label="Angsuran per bulan"
+                      value={formatRupiah(activePackage.monthlyInstallment)}
+                      strong
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Row
+                      label={`DP ${dpPercent}%`}
+                      value={formatRupiah(result.dpAmount)}
+                      tone="accent"
+                    />
+                    <Row label="Pokok Pinjaman" value={formatRupiah(result.principal)} />
+                    <Row
+                      label="Total Bunga"
+                      value={formatRupiah(result.totalPayment - result.principal)}
+                    />
+                    <Row label="Total Bayar" value={formatRupiah(result.totalPayment)} strong />
+                  </>
+                )}
               </dl>
 
               {/* CTA */}
@@ -258,7 +359,10 @@ export function CreditSimulator({
               {/* Disclaimer */}
               <p className="mt-4 flex items-start gap-2 text-[11px] leading-relaxed text-white/55">
                 <Info className="mt-px h-3.5 w-3.5 shrink-0" />
-                <span>{credit.disclaimer}</span>
+                <span>
+                  {credit.disclaimer}
+                  {activePackage ? ` ${credit.maybankLegal}` : ""}
+                </span>
               </p>
             </div>
           </RevealItem>
